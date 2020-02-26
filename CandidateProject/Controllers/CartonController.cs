@@ -127,7 +127,7 @@ namespace CandidateProject.Controllers
             }
             return View(carton);
         }
-
+        
         // POST: Carton/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -278,6 +278,27 @@ namespace CandidateProject.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("ViewCartonEquipment", new { id = removeEquipmentViewModel.CartonId });
+        }
+        
+        public ActionResult RemoveAllCartonEquipment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var carton = db.Cartons
+                .Include(x => x.CartonDetails)
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+            
+            if (carton == null || carton.CartonDetails == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.CartonDetails.RemoveRange(carton.CartonDetails);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

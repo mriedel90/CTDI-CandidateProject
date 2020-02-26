@@ -29,11 +29,11 @@
             @if (item.CanAddEquipment)
             {
                 <span>
-                    @Html.ActionLink("AddEquipment", "AddEquipment", new { id = item.Id }) |
+                    @Html.ActionLink("Add Equipment", "AddEquipment", new { id = item.Id }) |
                 </span>
             }
-            @Html.ActionLink("ViewCartonEquipment", "ViewCartonEquipment", new { id = item.Id })
-
+            @Html.ActionLink("View Carton Equipment", "ViewCartonEquipment", new { id = item.Id }) |
+            @Html.ActionLink("Remove All Carton Equipment", "RemoveAllCartonEquipment", new { id = item.Id })
         </td>
     </tr>
 }
