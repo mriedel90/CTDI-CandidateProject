@@ -16,10 +16,12 @@ namespace CandidateProject.Controllers
         public ActionResult Index()
         {
             var cartons = db.Cartons
+                .Include(x => x.CartonDetails)
                 .Select(c => new CartonViewModel()
                 {
                     Id = c.Id,
-                    CartonNumber = c.CartonNumber
+                    CartonNumber = c.CartonNumber,
+                    CanAddEquipment = c.CartonDetails.Count < 10
                 })
                 .ToList();
 
@@ -157,6 +159,10 @@ namespace CandidateProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
+            // dont allow adding more than 10 equipments to a carton
+            if (db.Cartons.Include(x => x.CartonDetails).FirstOrDefault(x => x.Id == id)?.CartonDetails.Count >= 10)
+                return RedirectToAction("Index");
 
             var carton = db.Cartons
                 .Where(c => c.Id == id)
@@ -198,6 +204,11 @@ namespace CandidateProject.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                // dont allow adding more than 10 equipments to a carton
+                if (carton.CartonDetails.Count >= 10)
+                    return RedirectToAction("Index");
+
                 var equipment = db.Equipments
                     .Where(e => e.Id == addEquipmentViewModel.EquipmentId)
                     .SingleOrDefault();

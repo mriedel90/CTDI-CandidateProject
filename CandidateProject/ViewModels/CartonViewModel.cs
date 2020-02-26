@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public string CartonNumber { get; set; }
+        public bool CanAddEquipment { get; set; }
     }
 }
