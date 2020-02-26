@@ -240,10 +240,24 @@ namespace CandidateProject.Controllers
 
         public ActionResult RemoveEquipmentOnCarton([Bind(Include = "CartonId,EquipmentId")] RemoveEquipmentViewModel removeEquipmentViewModel)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             if (ModelState.IsValid)
             {
-                //Remove code here
+                var carton = db.Cartons
+                    .Include(x => x.CartonDetails)
+                    .Where(x => x.Id == removeEquipmentViewModel.CartonId)
+                    .FirstOrDefault();
+
+                if (carton == null || carton.CartonDetails == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                var cartonDetail = carton.CartonDetails.FirstOrDefault(x => x.EquipmentId == removeEquipmentViewModel.EquipmentId);
+                               
+                if (cartonDetail == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                db.CartonDetails.Remove(cartonDetail);
+                db.SaveChanges();
             }
             return RedirectToAction("ViewCartonEquipment", new { id = removeEquipmentViewModel.CartonId });
         }
