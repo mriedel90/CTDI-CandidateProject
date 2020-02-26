@@ -21,7 +21,8 @@ namespace CandidateProject.Controllers
                 {
                     Id = c.Id,
                     CartonNumber = c.CartonNumber,
-                    CanAddEquipment = c.CartonDetails.Count < 10
+                    CanAddEquipment = c.CartonDetails.Count < 10,
+                    EquipmentCount = c.CartonDetails.Count
                 })
                 .ToList();
 

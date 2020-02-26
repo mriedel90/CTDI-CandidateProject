@@ -20,19 +20,20 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CartonNumber)
+            @Html.DisplayFor(modelItem => item.CartonNumber) (@item.EquipmentCount equipments)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
             @if (item.CanAddEquipment)
             {
-            <span>
-                @Html.ActionLink("AddEquipment", "AddEquipment", new { id = item.Id }) |
-            </span>
+                <span>
+                    @Html.ActionLink("AddEquipment", "AddEquipment", new { id = item.Id }) |
+                </span>
             }
-            @Html.ActionLink("ViewCartonEquipment", "ViewCartonEquipment", new { id=item.Id })
+            @Html.ActionLink("ViewCartonEquipment", "ViewCartonEquipment", new { id = item.Id })
+
         </td>
     </tr>
 }
